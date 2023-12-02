@@ -49,25 +49,27 @@ declare -a value
 		echo "${column_name[i]}: ${value[i]}"  >> ${value[3]}.$s
 	done
 	# Changing Dollar format
-	cr=${value[10]}
-	len=${#cr}
+	cr="${value[10]}"
+	
+	len=${#cr}-1
 	dr=""
-	if(len==5);
+	if(($len==5));
 	then
 		dr=${cr:0:2}","${cr:2:3}
 	fi
-	if(len==4);
+	if(($len==4));
 	then
 		dr=${cr:0:1}","${cr:1:3}
 	fi
-				if(len==6);
+				if(($len==6));
 				then
+				
 				dr=${cr:0:1}","${cr:1:2}","${cr:3:3}
 				fi
-		
 	ms='$'
+
 	echo "Credit Limit:$ms $dr"  >> ${value[3]}.$s
-	cd "/mnt/c/Unix-session"
+	cd "/mnt/c/Unixsession"
 	
   done
 } < Record.csv
