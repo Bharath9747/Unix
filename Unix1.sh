@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 declare -a column_name
 declare -a value
+
 {
 # read the first row ie column names
   IFS=, read -r -a column_name
@@ -51,25 +52,29 @@ declare -a value
 	# Changing Dollar format
 	cr="${value[10]}"
 	
-	len=${#cr}-1
-	dr=""
-	if(($len==5));
-	then
-		dr=${cr:0:2}","${cr:2:3}
-	fi
-	if(($len==4));
-	then
-		dr=${cr:0:1}","${cr:1:3}
-	fi
-				if(($len==6));
-				then
-				
-				dr=${cr:0:1}","${cr:1:2}","${cr:3:3}
-				fi
+	len=${#cr}
+	fl=$((len-1))
+	declare -a dr
+	dr=("${cr: -4}")
+	for ((i=fl-3;i>0;i-=2)); do
+		j=0
+		f=$((i-2))
+		if(($f>=0));
+		then
+			j=$((f))
+		else
+			dr=("${cr: 0:1}" "${dr[@]}")
+			break
+		fi
+		dr=("${cr: j:2}" "${dr[@]}")
+	done
+	dr_s=$(IFS=','; echo "${dr[*]}")
+	
 	ms='$'
 
-	echo "Credit Limit:$ms $dr"  >> ${value[3]}.$s
+	echo "Credit Limit:$ms $dr_s"  >> ${value[3]}.$s
 	cd "/mnt/c/Unixsession"
+	
 	
   done
 } < Record.csv
